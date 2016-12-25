@@ -120,21 +120,20 @@ def mol_to_chemfig(mol_format):
 
 
 def parse_reaction(reaction, mol_files):
-    x_coordinates = []
-    y_coordinates = []
     all_reactions = {}
     arrows = reaction["s"]
     arrows_x_coor = [(i['x1'], i['x2']) for i in arrows]
     arrows_y_coor = [(i['y1'], i['y2']) for i in arrows]
 
-    def get_coor(axis, a_list):
+    def get_coor(axis):
+        a_list = []
         for i in range(len(reaction['m'])):
             bonds = reaction['m'][i]['a']
             c = [round(bond[axis], 3) for bond in bonds]
             a_list.append(sorted(c)[-1])
-        return
-    get_coor("x", x_coordinates)
-    get_coor("y", y_coordinates)
+        return a_list
+    x_coordinates = get_coor("x")
+    y_coordinates = get_coor("y")
     for num, coor in enumerate(arrows_x_coor):
         d = {}
         substrates = []

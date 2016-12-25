@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Debian) (preloaded format=pdflatex 2016.12.17)  25 DEC 2016 14:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Debian) (preloaded format=pdflatex 2016.12.17)  25 DEC 2016 14:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -572,13 +572,13 @@ LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 Here is how much of TeX's memory you used:
  13896 strings out of 493013
  281817 string characters out of 6135681
- 337306 words of memory out of 5000000
+ 337259 words of memory out of 5000000
  17201 multiletter control sequences out of 15000+600000
  4094 words of font info for 16 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,9n,90p,493b,1234s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,9n,90p,493b,1245s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb>
-Output written on reaction.pdf (1 page, 8917 bytes).
+Output written on reaction.pdf (1 page, 8910 bytes).
 PDF statistics:
  15 PDF objects out of 1000 (max. 8388607)
  10 compressed objects within 1 object stream
