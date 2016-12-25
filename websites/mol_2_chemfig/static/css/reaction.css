@@ -1,0 +1,47 @@
+/* REACTIONS */
+
+#sketcher2, iframe{
+    background-color: white;
+}
+
+/* Sketcher toolbar */
+div[style*="font-size:10px;"] {
+    display: inline-flex;
+    margin-left:30px;
+}
+
+iframe, #arrow_text{
+    border: 1px solid #2196F3!important;
+    box-shadow: 0 0 10px #719ECE;
+}
+
+#reaction{
+    margin-top: 35px;
+}
+
+iframe:focus { 
+    outline: none;
+}
+
+iframe[seamless] { 
+    display: block;
+}
+
+img {
+    margin-bottom: 0px;
+}
+
+#arrow_text{
+    width: 250px;
+    margin-left:5px;
+    font-size:13px;
+    padding-left:3px;
+}
+
+/* #add_text{ */
+/*     padding:1px; */
+/* } */
+
+#convert2{
+    margin-top:7px;
+}

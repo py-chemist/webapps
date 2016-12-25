@@ -1,0 +1,112 @@
+{% extends "mol_2_chemfig/layout.html" %}
+
+{% block extra %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('mol_2_chemfig.static', filename='css/custom.css') }}">
+<script type="text/javascript" src="{{ url_for('mol_2_chemfig.static', filename='js/custom.js')}}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="w3-container w3-padding-32">
+  <div class="w3-row">
+    <div class="w3-col m4">
+      <div id="chem" class="w3-center">
+	<script>
+	  var width  = document.getElementById("chem").offsetWidth;
+	  var sketcher = new ChemDoodle.SketcherCanvas('sketcher', width-40, 300, {oneMolecule:true, useServices:false});
+	  sketcher.specs.atoms_useJMOLColors = true;
+	  <!-- sketcher.specs.atoms_displayTerminalCarbonLabels_2D = true; -->
+	  <!-- ChemDoodle.ELEMENT['C'].jmolColor = 'black'; -->
+	  function getMol($data){
+	      document.getElementById('txt_area').value = $data;
+	      smiles_mol = 'mol';	      
+	  };
+	</script>
+	<button class="w3-btn w3-xsmall w3-indigo w3-round"
+		type="submit" id="get_mol"
+		onclick="getMol(ChemDoodle.writeMOL(sketcher.getMolecule()));">Get Mol</button>
+      </div> <!-- end container -->
+    </div> <!-- end col m4 -->
+    <div class="w3-col m5">
+      <div class="w3-row">
+        <div class="w3-col w3-padding-2" style="width:85%">
+	  <form onsubmit="return false;" autocomplete="off">
+	     {{ form.hidden_tag() }}
+	     {{form.db_search(id="chemical", class="w3-input w3-border w3-border-blue w3-round",
+	     placeholder="Find a compound by name (e.g. aspirin)")}}     		
+	</div> <!-- end col 80 -->
+        <div class="w3-rest">
+	  {{form.submit(id="search", class="w3-btn w3-xsmall w3-border w3-indigo w3-round")}}
+	</div> <!-- end rest -->
+        <div class="w3-row w3-padding-16">
+	  {{form.smiles_mol(id="txt_area", class="w3-input w3-border")}}	  
+	</div> <!-- end row -->
+        <div class="w3-container w3-center">
+	{{form.convert(id="convert", class="w3-btn w3-indigo w3-border w3-round w3-xsmall", value="Convert")}} 
+	</div>
+      </div> <!-- end row -->
+    </div> <!-- end col m5-->
+
+    
+    <div class="w3-col m3">
+      <div class="w3-container w3-center">
+	<iframe id="pdf" src ="{{ pdflink }}" style="width:100%; height:200px" allowfullscreen></iframe>
+      </div>  <!--end container -->
+      <div class="w3-container w3-padding-16" id="check_boxes">      
+        <div class="w3-row">
+          <div class="w3-col w3-half">
+	    {% for checkbox in checkboxes[:6] %}
+	    <input type="checkbox" class="w3-check" name="check" value="{{ checkbox[1] }}">
+	    <label class="w3-validate" title="{{ checkbox[0] }}">{{checkbox[2]}}</label><br>
+	    {% endfor  %}  
+	  </div> <!-- end col -->
+          <div class="w3-col w3-half">
+	    {% for checkbox in checkboxes[6:] %}
+	    <input type="checkbox" class="w3-check" name="check" value="{{ checkbox[1] }}" style="margin-left:5px;">
+	    <label class="w3-validate" title="{{ checkbox[0] }}">{{checkbox[2]}}</label><br>
+	    {% endfor  %}      
+              <div class="w3-row">
+                <div class="w3-col w3-third">
+		  <input class="w3-input w3-border" id="angle2" type="text"
+			 name="angle" size="2" value="0.0"
+			 title="Rotate molecule counterclockwise by this angle.">
+		</div>
+                <div class="w3-rest">
+		  <label id="angle">angle</label>
+		</div>
+	      </div> <!-- end row -->
+	      {{ form.hydrogens(id="H2", class="w3-select w3-border",
+	      title="Provide options how to display hydrogen atoms") }}
+	      <span id="text_hydrogens">{{ form.hydrogens.label }}</span><br>
+	  </div> <!-- end col -->
+        </div> <!-- end row -->
+      </div> <!-- end container  -->
+      <a id="more_options" href="http://chimpsky.uwaterloo.ca/mol2chemfig/webiface" target="_blank">Need more options?</a>
+      <div id="update_reset">
+	{{ form.update(id="check_update", class="w3-btn w3-indigo w3-border w3-round w3-xsmall") }}
+	{{ form.reset(id="check_reset", class="w3-btn w3-red w3-border w3-round w3-xsmall")  }}
+      </div> <!-- end update_reset -->
+    </div> <!-- end col m3 -->
+  </div> <!-- end row -->
+</div> <!-- end container -->
+
+<div id="not_found" class="w3-modal">
+  <div class="w3-modal-content w3-card-8">
+    <header class="w3-container w3-red" style="height: 30px;">
+      <span onclick="document.getElementById('not_found').style.display='none'"
+      class="w3-closebtn w3-medium">&times;</span>
+      <h6 class="w3-center" style="margin-top:2px;">Ooops...</h6>
+    </header>
+    <div class="w3-container">
+      <p id="warning" class="w3-center"></p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+   {{ super() }}
+{% endblock %}            
+	    
+	    

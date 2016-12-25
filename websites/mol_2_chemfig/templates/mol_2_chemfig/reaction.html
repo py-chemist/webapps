@@ -1,0 +1,47 @@
+<!-- {% extends "mol_2_chemfig/layout.html" %} -->
+
+{% block extra %}
+<script src="{{ url_for('mol_2_chemfig.static', filename='js/jquery.min.js')}}"></script> 
+<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('mol_2_chemfig.static', filename='css/reaction.css') }}">
+<script type="text/javascript" src="{{ url_for('mol_2_chemfig.static', filename='js/reaction.js')}}"></script>
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"> -->
+{% endblock %}
+
+
+{% block content %}
+
+<div class="w3-container w3-padding-top">
+  <div class="w3-row">
+    <div class="w3-col m8"> 
+      <div id="chem2" >
+	<script>
+	  var width  = document.getElementById("chem2").offsetWidth;
+	  var sketcher2 = new ChemDoodle.SketcherCanvas('sketcher2', width-10, 200, {oneMolecule:false, useServices:false});
+	  <!-- sketcher2.specs.atoms_useJMOLColors = true; -->
+	</script><br>
+        <div class="w3-center">
+	  <button class="w3-btn w3-xsmall w3-indigo
+			 w3-round"
+		  id="convert2">
+	    Convert
+	</button><br>
+	</div>
+	
+      </div> <!-- end chem -->
+      <br>
+      <iframe id="pdf" src ="{{ pdflink }}" frameborder="0" allowfullscreen style="width:99%; height:37vh;" ></iframe>
+    </div> <!-- end col -->
+    <div class="w3-col m4">
+      <textarea cols="60" id="reaction" rows="20" class="w3-input w3-border w3-border-blue w3-round">
+      </textarea>
+    </div>
+  </div> <!-- end row -->
+  
+</div> <!-- end container -->
+
+{% endblock %}
+
+
+

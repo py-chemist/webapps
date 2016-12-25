@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="UTF-8"/>
+    <title>Mol2chemfig Web</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link rel="stylesheet" src="//necolas.github.io/normalize.css/4.1.1/normalize.css">
+    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}"> -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('mol_2_chemfig.static', filename='css/w3.css') }}">    
+    <!-- <script type="text/javascript" src="{{ url_for('mol_2_chemfig.static', filename='js/angular.min.js')}}"></script> -->
+    <script src="{{ url_for('mol_2_chemfig.static', filename='js/jquery.min.js')}}"></script> 
+    {% block extra %}
+
+    {% endblock %}
+    
+    <!--these three are required by the ChemDoodle Web Components library-->
+
+    <link rel="stylesheet" href="{{ url_for('mol_2_chemfig.static', filename='ChemDoodleWeb/install/ChemDoodleWeb.css')}}" type="text/css">
+    <script type="text/javascript" src="{{url_for('mol_2_chemfig.static', filename='ChemDoodleWeb/install/ChemDoodleWeb.js')}}"></script>
+    <!--these two are required by the SketcherCanvas plugin-->
+    <link rel="stylesheet" href="{{ url_for('mol_2_chemfig.static', filename='ChemDoodleWeb/install/uis/jquery-ui-1.10.3.custom.css')}}" type="text/css">
+    <script type="text/javascript" src="{{ url_for('mol_2_chemfig.static', filename='ChemDoodleWeb/install/uis/ChemDoodleWeb-uis.js')}}"></script>
+
+
+<body style="background-color:#F1F1F1 !important;">
+  <header>
+    <ul class="w3-navbar w3-border w3-dark-grey">
+	<li><a href="{{url_for('mol_2_chemfig.main')}}"><strong>Mol2chemfig Web</strong></a></li>
+	<li><a href="{{url_for('mol_2_chemfig.reaction')}}">Reaction</a></li>
+	<li><a href="#">Link 1</a></li> <!-- url_for(blueprint.route) -->
+	<li><a href="#">Link 2</a></li>
+	<li><a href="#">Link 3</a></li>
+    </ul> 
+  </header>
+   
+  {% block content %}     	
+
+  {% endblock %}
+  
+  {% block scripts %}
+             
+  {% endblock %}
+	    
+</body>
+</html>
