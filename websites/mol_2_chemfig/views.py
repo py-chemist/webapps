@@ -119,50 +119,52 @@ def mol_to_chemfig(mol_format):
     return chemfig
 
 
-def parse_reaction(reaction, mol_files):
-    all_reactions = {}
-    arrows = reaction["s"]
-    arrows_x_coor = [(i['x1'], i['x2']) for i in arrows]
-    arrows_y_coor = [(i['y1'], i['y2']) for i in arrows]
+def get_round(n):
+    return round(n, 3)
 
-    def get_coor(axis):
-        a_list = []
-        for i in range(len(reaction['m'])):
-            bonds = reaction['m'][i]['a']
-            c = [round(bond[axis], 3) for bond in bonds]
-            a_list.append(sorted(c)[-1])
-        return a_list
-    x_coordinates = get_coor("x")
-    y_coordinates = get_coor("y")
-    for num, coor in enumerate(arrows_x_coor):
-        d = {}
-        substrates = []
-        reactants = []
-        products = []
-        for index, mol_coor in enumerate(x_coordinates):
-            if mol_coor < coor[0]:
-                substr = mol_to_chemfig(mol_files[index])
-                substrates.append(substr)
-                d['substrates'] = substrates
-            elif mol_coor > coor[1]:
-                prod = mol_to_chemfig(mol_files[index])
-                products.append(prod)
-                d['products'] = products
-            elif coor[0] < mol_coor < coor[1]:
-                if y_coordinates[index] < max(arrows_y_coor[num]):
-                    d['reactants'] = {'above': mol_to_chemfig(mol_files[num])}
-                else:
-                    d['reactants'] = {'below': mol_to_chemfig(mol_files[num])}
-            all_reactions['reaction' + str(num + 1)] = d
-    return all_reactions
+
+def parse_reaction(reaction, mol_files, text_arrow):
+    all_compounds = []
+    above_arrow = []
+    above_arrow2 = []
+    arrows = []
+    all_arrows = reaction["s"]
+    arrows_x_coor = [(i['x1'], i['x2']) for i in all_arrows]
+    # arrows_y_coor = [(i['y1'], i['y2']) for i in arrows]
+    for i in range(len(reaction['m'])):
+        bonds = reaction['m'][i]['a']
+        c = sorted([get_round(bond['x']) for bond in bonds])[-1]
+        all_compounds.append((c, mol_to_chemfig(mol_files[i])))
+    all_compounds = sorted(all_compounds)
+    for mol in all_compounds:
+        for ar in arrows_x_coor:
+            if ar[0] < mol[0] < ar[1]:
+                above = "\\arrow{->[%s]}" % mol[1] + '\n'
+                above_arrow.append((get_round(ar[1]), above))
+                above_arrow2.append(mol[0])
+    compounds = [i for i in all_compounds if i[0] not in above_arrow2]
+    #print compounds
+    print "above arrow", above_arrow
+    print "above_arrow2", above_arrow2
+    for i in [n[1] for n in arrows_x_coor]:
+        print get_round(i), "----------"
+        if get_round(i) not in [m[0] for m in above_arrow]:
+            print "i", i
+            arrows.append((get_round(i), arrow))
+    print "arrows", arrows
+    final = sorted(above_arrow + compounds + arrows)
+    final = [i[1] for i in final]
+    print "final", final
+    reactions_chemfig = ''.join(i for i in final)
+    return reactions_chemfig
 
 
 @mol_2_chemfig.route('/convert_reaction', methods=["POST", "GET"])
 def convert_reaction():
     mol_files = request.json['MOLFiles']
     reaction = json.loads(request.json['reaction'])
-    d = parse_reaction(reaction, mol_files)
-    # arrow_types = [reaction["s"][i]["a"] for i in range(len(reaction["s"]))]
+    input_text = request.json['input_text']
+    d = parse_reaction(reaction, mol_files, input_text)
     add_sign = "\+{1em, 1em, -2em}"
 
     def get_compounds(a_list):
@@ -170,14 +172,8 @@ def convert_reaction():
         for mol in a_list:
             compounds +=  mol + '\n' + add_sign + '\n'
         return compounds[: len(compounds) - len(add_sign) - 1].strip()
-    s = ''
-    for r in d.keys():
-        s += get_compounds(d[r]['substrates'])
-        s += "\n" + arrow
-        s += get_compounds(d[r]['products'])
-    print s
-    latex_template = latex_begins + start + s + latex_ends
-    txt_latex = start + s + latex_ends
+    latex_template = latex_begins + start + d + latex_ends
+    txt_latex = start + d + stop
     with open(folder + latex_file, 'w') as f:
         f.write(latex_template)
     os.system(latexcmd)
@@ -203,4 +199,5 @@ latex_begins = r"""
 \begin{center}""" + '\n'
 start = '\schemestart[0,2,thick]' + '\n'
 arrow = "\\arrow{}" + '\n'
+stop = "\n" + "\schemestop"
 latex_ends = "\n" + "\schemestop" + '\n' + "\end{center}" + "\n" + "\\vspace*{\\fill}" + "\n" + "\end{document}"

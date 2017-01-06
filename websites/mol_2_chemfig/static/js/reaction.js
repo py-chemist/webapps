@@ -25,6 +25,7 @@ $( document ).ready(function() {
 	var molecules = sketcher2.molecules;
         var shapes = sketcher2.shapes;
 	var reaction = JSON.stringify(new ChemDoodle.io.JSONInterpreter().contentTo(molecules, shapes));
+	var input_text = $("#arrow_text").val();
         //alert(JSON.stringify($('sketcher_canvas').children()));
 	// alert(reaction);
         var num_of_molecules = Object.keys(molecules).length;
@@ -39,13 +40,7 @@ $( document ).ready(function() {
             contentType: 'application/json; charset=UTF-8',
             data: JSON.stringify({'MOLFiles': MOLFiles,
                                   'reaction': reaction,
-				  'txt_bellow':text_bellow_arrow,
-				  'txt_above': text_above_arrow}),
-                                  // 'sketcher_img': sketcher_img,
-                                  // 'reactants_links': reactants_links}),
-                                 // {'img_data': img_data,
-                                 //  'sketcher_image': sketcher_img,
-                                 //  'reaction': reaction}),
+				  'input_text': input_text}),
             dataType: 'json',
             success: function(data){
                 $('#reaction').val(data.data); 
@@ -68,6 +63,8 @@ $( document ).ready(function() {
 	    // alert(JSON.stringify(shapes));
             var num_of_arrows = shapes.length;
             var all_text = input_text.split('|');
+	    // alert(input_text);
+	    
             for(var i = 0; i < num_of_arrows; i++){
 		var arrow_text = all_text[i].split(";");
                 shapes[i].topText = arrow_text[0];
