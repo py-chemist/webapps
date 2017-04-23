@@ -123,38 +123,58 @@ def get_round(n):
     return round(n, 3)
 
 
-def parse_reaction(reaction, mol_files, text_arrow):
-    all_compounds = []
-    above_arrow = []
-    above_arrow2 = []
-    arrows = []
-    all_arrows = reaction["s"]
-    arrows_x_coor = [(i['x1'], i['x2']) for i in all_arrows]
-    # arrows_y_coor = [(i['y1'], i['y2']) for i in arrows]
+def get_all_compounds(axis, a_list, reaction, mol_files):
     for i in range(len(reaction['m'])):
         bonds = reaction['m'][i]['a']
-        c = sorted([get_round(bond['x']) for bond in bonds])[-1]
-        all_compounds.append((c, mol_to_chemfig(mol_files[i])))
-    all_compounds = sorted(all_compounds)
-    for mol in all_compounds:
-        for ar in arrows_x_coor:
-            if ar[0] < mol[0] < ar[1]:
-                above = "\\arrow{->[%s]}" % mol[1] + '\n'
-                above_arrow.append((get_round(ar[1]), above))
-                above_arrow2.append(mol[0])
-    compounds = [i for i in all_compounds if i[0] not in above_arrow2]
+        c = sorted([get_round(bond[axis]) for bond in bonds])[-1]
+        a_list.append((c, mol_to_chemfig(mol_files[i])))
+
+
+def parse_reaction(reaction, mol_files, text_arrow):
+    all_compounds_x = []
+    all_compounds_y = []
+    get_all_compounds("x", all_compounds_x, reaction,  mol_files)
+    get_all_compounds("y", all_compounds_y, reaction,  mol_files)
+    above_below = []
+    above_below2 = []
+    above_arrow = []
+    below_arrow = []
+    arrows = []
+    print([i[0] for i in all_compounds_y])
+    all_arrows = reaction["s"]
+    arrows_x_coor = [(i['x1'], i['x2']) for i in all_arrows]
+    arrows_y_coor = [(i['y1'], i['y2']) for i in all_arrows]
+    print(arrows_y_coor)
+    all_compounds_x = sorted(all_compounds_x)
+    for num, x_mol in enumerate(all_compounds_x):
+        for index, ar_x in enumerate(arrows_x_coor):
+            if ar_x[0] < x_mol[0] < ar_x[1]:
+                print all_compounds_y[num][0], arrows_y_coor[index][0], index
+                if all_compounds_y[num][0] < arrows_y_coor[index][0]:
+                    below_arrow.append((index, x_mol[1]))
+                elif all_compounds_y[num][0] > arrows_y_coor[index][0]:
+                    above_arrow.append((index, x_mol[1]))                
+                # if all_compounds_y[num] < arrows_y_coor[index][0]:
+                #     above_below = "\\arrow{->[%s]}" % x_mol[1] + '\n'
+                # elif all_compounds_y[num] > arrows_y_coor[index][0]:
+                #     above_below = "\\arrow{->[][%s]}" % x_mol[1] + '\n'
+                # above_arrow.append((get_round(ar_x[1]), above_below))
+                above_below2.append(x_mol[0])
+    print above_arrow, "============"
+    print below_arrow, "++++++++++++"
+    compounds = [i for i in all_compounds_x if i[0] not in above_below2]
     #print compounds
-    print "above arrow", above_arrow
-    print "above_arrow2", above_arrow2
+    # print "above arrow", above_arrow
+    # print "above_arrow2", above_arrow2
     for i in [n[1] for n in arrows_x_coor]:
-        print get_round(i), "----------"
+        #print get_round(i), "----------"
         if get_round(i) not in [m[0] for m in above_arrow]:
-            print "i", i
+            #print "i", i
             arrows.append((get_round(i), arrow))
-    print "arrows", arrows
-    final = sorted(above_arrow + compounds + arrows)
+    # print "arrows", arrows
+    final = sorted(above_below + compounds + arrows)
     final = [i[1] for i in final]
-    print "final", final
+    # print "final", final
     reactions_chemfig = ''.join(i for i in final)
     return reactions_chemfig
 
@@ -176,6 +196,8 @@ def convert_reaction():
     txt_latex = start + d + stop
     with open(folder + latex_file, 'w') as f:
         f.write(latex_template)
+    # os.chdir("/home/py-chemist/Projects/websites/websites/mol_2_chemfig/static")
+    # print(os.curdir, "+++++++++++++++++++")
     os.system(latexcmd)
     pdf_string = open('reaction.pdf').read()
     encoded = base64.encodestring(pdf_string)
