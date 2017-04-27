@@ -1,4 +1,8 @@
-<!-- {% extends "mol_2_chemfig/layout.html" %} -->
+{% extends "mol_2_chemfig/layout.html" %}
+
+{% block title %}
+<title>Reaction</title>
+{% endblock %}
 
 {% block extra %}
 <script src="{{ url_for('mol_2_chemfig.static', filename='js/jquery.min.js')}}"></script> 
@@ -19,10 +23,10 @@
 	<script>
 	  var width  = document.getElementById("chem2").offsetWidth;
 	  var sketcher2 = new ChemDoodle.SketcherCanvas('sketcher2', width-10, 200, {oneMolecule:false, useServices:false});
-	  <!-- sketcher2.specs.atoms_useJMOLColors = true; -->
+	  sketcher2.specs.atoms_useJMOLColors = true;
 	</script><br>
         <div class="w3-center">
-	  <button class="w3-btn w3-xsmall w3-indigo
+	  <button class="w3-btn w3-ripple w3-xsmall w3-teal
 			 w3-round"
 		  id="convert2">
 	    Convert
@@ -33,10 +37,32 @@
       <br>
       <iframe id="pdf" src ="{{ pdflink }}" frameborder="0" allowfullscreen style="width:99%; height:37vh;" ></iframe>
     </div> <!-- end col -->
-    <div class="w3-col m4">
-      <textarea cols="60" id="reaction" rows="20" class="w3-input w3-border w3-border-blue w3-round">
-      </textarea>
-    </div>
+    <div class="w3-col m4">      
+      <textarea id="reaction" rows="20" class="w3-input w3-border w3-border-blue w3-round"></textarea>
+      <div id="options">
+	<input type="checkbox" class="w3-check" name="check" value="-w">
+	<label class="w3-validate" title="Wrap the code into \chemfig{...}">chemfig</label>	
+
+	<input type="checkbox" class="w3-check" name="check" value="-j">
+	<label class="w3-validate" title="Display chemfig format inline">inline</label>
+	
+	<input type="checkbox" class="w3-check" name="check" value="-rm">
+	<label class="w3-validate" title="Strip line after %">remove %</label>
+
+	<input type="checkbox" class="w3-check" name="check" value="-f">
+	<label class="w3-validate" title="Show nicer double and triple bonds">fancy bonds</label><br>
+	
+	<input type="checkbox" class="w3-check" name="check" value="-o">
+	<label class="w3-validate" title="Show circle in aromatic compounds instead of double bonds">aromatic</label><br>
+      </div>
+      <div id="update_reset2">
+	<input class="w3-btn w3-teal w3-border w3-round w3-tiny w3-padding-small w3-ripple"
+	       id="check_update" name="update" type="submit" value="Apply">
+	<input class="w3-btn w3-red w3-border w3-round w3-tiny w3-padding-small w3-ripple"
+	       id="check_reset" name="reset" type="submit" value="Reset">
+      </div> <!-- end update_reset -->
+    </div> <!-- end m4 -->
+    
   </div> <!-- end row -->
   
 </div> <!-- end container -->

@@ -17,13 +17,15 @@ iframe, #arrow_text{
 
 #reaction{
     margin-top: 35px;
+    margin-left: 10%;
+    width: 80%;
 }
 
-iframe:focus { 
+iframe:focus {
     outline: none;
 }
 
-iframe[seamless] { 
+iframe[seamless] {
     display: block;
 }
 
@@ -38,10 +40,24 @@ img {
     padding-left:3px;
 }
 
-/* #add_text{ */
-/*     padding:1px; */
-/* } */
+#add_text, #remove_text{
+    padding:1px 5px;
+    marging-left: 3px;
+}
 
 #convert2{
     margin-top:7px;
+}
+
+#options{
+    margin-left: 12%;
+    margin-top: 2%;
+}
+
+#update_reset2{
+    margin-left: 40%;
+}
+
+.w3-tiny{
+    font-size: 12px !important;
 }

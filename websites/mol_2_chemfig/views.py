@@ -123,11 +123,19 @@ def get_round(n):
     return round(n, 3)
 
 
-def get_all_compounds(axis, a_list, reaction, mol_files):
+# def get_all_compounds(axis, reaction, mol_files):
+#     for i in range(len(reaction['m'])):
+#         bonds = reaction['m'][i]['a']
+#         c = sorted([get_round(bond[axis]) for bond in bonds])[-1]
+#         a_list.append((c, mol_to_chemfig(mol_files[i])))
+
+def get_all_compounds(axis, reaction, mol_files):
+    d = {}
     for i in range(len(reaction['m'])):
         bonds = reaction['m'][i]['a']
         c = sorted([get_round(bond[axis]) for bond in bonds])[-1]
-        a_list.append((c, mol_to_chemfig(mol_files[i])))
+        d[c] = mol_to_chemfig(mol_files[i])
+    return d
 
 
 def group_reaction(arrows_coor, compounds_coor):
@@ -149,39 +157,79 @@ def group_reaction(arrows_coor, compounds_coor):
 
 
 def add_plus_sign(a_list, all_compounds):
+    """
+    Add plus sign between 2 or more starting materils or products
+    """
     all_pairs = []
     for i in a_list:
         if len(i) > 1:
-            compounds = ""
             for x in i:
-                compounds += dict(all_compounds)[x] + '\n' + add_sign + '\n'
-                chemfig = compounds[: len(compounds) - len(add_sign) - 1].strip()
-                all_pairs.append((x, chemfig))
+                compound = ""
+                if x == i[-1]:
+                    compound += all_compounds[x]
+                    all_pairs.append((x, compound))
+                else:
+                    compound += all_compounds[x] + '\n' + add_sign + '\n'
+                    all_pairs.append((x, compound))
     return all_pairs
 
 
+def parse_arrow_text(arrow_text, num_of_arrows):
+    """
+    Return a list of arrows with text above and below the arrows
+    """
+    filled_arrows = []
+    if arrow_text:
+        text_by_arrow = arrow_text.split('|')
+        above_bllow_all = [i.split(";") for i in text_by_arrow]
+        for text in above_bllow_all:
+            if len(text) == 2:
+                if text[0] == '':
+                    arrow = '\n' + "\\arrow{->[]%s}" % ('[' + text[1] + ']') + '\n'
+                    filled_arrows.append(arrow)
+                elif text[0] and text[1]:
+                    arrow = '\n' + "\\arrow{->%s}" % ('['+text[0]+']'+'['+text[1]+']') + '\n'
+                    filled_arrows.append(arrow)
+            elif len(text) == 1:
+                if text[0]:
+                    arrow = '\n' + "\\arrow{->%s}" %('[' + text[0] + ']') + '\n'
+                elif text[0] == '':
+                    arrow = '\n' + "\\arrow{}" + '\n'
+                filled_arrows.append(arrow)
+        if len(text_by_arrow) < len(num_of_arrows):
+            arrow = '\n' + "\\arrow{}" + '\n'
+            for _ in range(len(num_of_arrows) - len(text_by_arrow)):
+                filled_arrows.append(arrow)
+    else:
+        arrow = '\n' + "\\arrow{}" + '\n'
+        for _ in range(len(num_of_arrows)):
+            filled_arrows.append(arrow)
+    return filled_arrows
+
+
+@mol_2_chemfig.route('/parse_input_text', methods=["POST"])
+def parse_text():
+    input_text = request.json['input_text']
+    if "|" not in input_text:
+        input_text += "|"
+    text_by_arrow = input_text.split('|')
+    above_bllow_all = [i.split(";") for i in text_by_arrow]
+    return jsonify(splitted_text=above_bllow_all)
+
+
 def parse_reaction(reaction, mol_files, text_arrow):
-    all_compounds_x = []
-    # Get x coordinates and chemfig format for all compounds in the raction
-    get_all_compounds("x", all_compounds_x, reaction,  mol_files)
-    all_compounds_x = sorted(all_compounds_x)
-    print all_compounds_x
+    all_compounds = get_all_compounds("x", reaction,  mol_files)
     all_arrows = reaction["s"]
-    # Get x coordinates of all arrows
-    arrows_x_coor = [(i['x1'], i['x2']) for i in all_arrows]
-    arrows_coor_chemfig = []
     first_x_coor_arrow = [get_round(i['x1']) for i in all_arrows]
-    # get chemfig format for arrows
-    for i in [n[0] for n in arrows_x_coor]:
-        arrows_coor_chemfig.append((get_round(i), arrow))
-    # sort all comnpounds and arrows by first x coordinate
-    final = sorted(all_compounds_x + arrows_coor_chemfig)
-    first_x_coor_reaction = [i[0] for i in final]
-    g = group_reaction(first_x_coor_arrow, first_x_coor_reaction)
-    add_plus_sign(g, all_compounds_x)
-    # get chemfig format for a whole reaction
-    final_chemfig = [i[1] for i in final]
-    reactions_chemfig = ''.join(i for i in final_chemfig)
+    all_x_coord = sorted(all_compounds.keys() + first_x_coor_arrow)
+    grouped = group_reaction(first_x_coor_arrow, all_x_coord)
+    all_pairs = add_plus_sign(grouped, all_compounds)
+    for pair in all_pairs:
+        all_compounds[pair[0]] = pair[1]
+    arrows_text = parse_arrow_text(text_arrow, first_x_coor_arrow)
+    arrows_chemfig = [(i, arrows_text[num]) for num, i in enumerate(first_x_coor_arrow)]
+    complete_reaction = sorted(all_compounds.items() + arrows_chemfig)
+    reactions_chemfig = ''.join(i[1] for i in complete_reaction)
     return reactions_chemfig
 
 
@@ -218,6 +266,6 @@ latex_begins = r"""
 \begin{center}""" + '\n'
 add_sign = "\+{1em, 1em, -2em}"
 start = '\schemestart[0,2,thick]' + '\n'
-arrow = '\n' + "\\arrow{}" + '\n'
+#arrow = '\n' + "\\arrow{->[hello]%s}" %'[there]' + '\n'
 stop = "\n" + "\schemestop"
 latex_ends = "\n" + "\schemestop" + '\n' + "\end{center}" + "\n" + "\\vspace*{\\fill}" + "\n" + "\end{document}"
