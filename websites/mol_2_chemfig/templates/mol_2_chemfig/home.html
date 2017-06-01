@@ -1,13 +1,13 @@
 {% extends "mol_2_chemfig/layout.html" %}
 
 {% block extra %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('mol_2_chemfig.static', filename='css/custom.css') }}">
-<script type="text/javascript" src="{{ url_for('mol_2_chemfig.static', filename='js/custom.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('mol_2_chemfig.static', filename='css/home.css') }}">
+<script type="text/javascript" src="{{ url_for('mol_2_chemfig.static', filename='js/home.js')}}"></script>
 {% endblock %}
 
 {% block content %}
 
-<div class="w3-container w3-padding-32">
+<div class="w3-container w3-padding-24">
   <div class="w3-row">
     <div class="w3-col m4">
       <div id="chem" class="w3-center">
@@ -16,18 +16,18 @@
 	  var sketcher = new ChemDoodle.SketcherCanvas('sketcher', width-40, 300, {oneMolecule:true, useServices:false});
 	  sketcher.specs.atoms_useJMOLColors = true;
 	  <!-- sketcher.specs.atoms_displayTerminalCarbonLabels_2D = true; -->
-	  <!-- ChemDoodle.ELEMENT['C'].jmolColor = 'black'; -->
+	  ChemDoodle.ELEMENT['C'].jmolColor = 'black';
 	  function getMol($data){
 	      document.getElementById('txt_area').value = $data;
 	      smiles_mol = 'mol';	      
 	  };
 	</script>
-	<button class="w3-btn w3-xsmall w3-teal w3-round"
+	<button class="w3-btn w3-teal w3-small w3-round"
 		type="submit" id="get_mol"
 		onclick="getMol(ChemDoodle.writeMOL(sketcher.getMolecule()));">Get Mol</button>
       </div> <!-- end container -->
     </div> <!-- end col m4 -->
-    <div class="w3-col m5">
+    <div class="w3-col m5 w3-margin-top">
       <div class="w3-row">
         <div class="w3-col w3-padding-2" style="width:85%">
 	  <form onsubmit="return false;" autocomplete="off">
@@ -36,13 +36,13 @@
 	     placeholder="Find a compound by name (e.g. aspirin)")}}     		
 	</div> <!-- end col 80 -->
         <div class="w3-rest">
-	  {{form.submit(id="search", class="w3-btn w3-xsmall w3-border w3-teal w3-round")}}
+	  {{form.submit(id="search", class="w3-btn w3-tiny w3-border w3-teal w3-round")}}
 	</div> <!-- end rest -->
         <div class="w3-row w3-padding-16">
 	  {{form.smiles_mol(id="txt_area", class="w3-input w3-border")}}	  
 	</div> <!-- end row -->
         <div class="w3-container w3-center">
-	{{form.convert(id="convert", class="w3-btn w3-teal w3-border w3-round w3-xsmall", value="Convert")}} 
+	{{form.convert(id="convert", class="w3-btn w3-teal w3-border w3-round w3-small", value="Convert")}} 
 	</div>
       </div> <!-- end row -->
     </div> <!-- end col m5-->
@@ -52,7 +52,7 @@
       <div class="w3-container w3-center">
 	<iframe id="pdf" src ="{{ pdflink }}" style="width:100%; height:200px" allowfullscreen></iframe>
       </div>  <!--end container -->
-      <div class="w3-container w3-padding-16" id="check_boxes">      
+      <div class="w3-container w3-padding" id="check_boxes">      
         <div class="w3-row">
           <div class="w3-col w3-half">
 	    {% for checkbox in checkboxes[:6] %}
@@ -81,10 +81,12 @@
 	  </div> <!-- end col -->
         </div> <!-- end row -->
       </div> <!-- end container  -->
-      <a id="more_options" href="http://chimpsky.uwaterloo.ca/mol2chemfig/webiface" target="_blank">Need more options?</a>
-      <div id="update_reset">
-	{{ form.update(id="check_update", class="w3-btn w3-teal w3-border w3-round w3-xsmall") }}
-	{{ form.reset(id="check_reset", class="w3-btn w3-red w3-border w3-round w3-xsmall")  }}
+      <div id="more_options" class="w3-center w3-padding">
+	<a  class="w3-text-indigo" href="http://chimpsky.uwaterloo.ca/mol2chemfig/webiface" target="_blank">Need more options?</a>
+      </div>
+      <div id="update_reset" class="w3-center">
+	{{ form.update(id="check_update", class="w3-btn w3-teal w3-border w3-round w3-tiny") }}
+	{{ form.reset(id="check_reset", class="w3-btn w3-red w3-border w3-round w3-tiny")  }}
       </div> <!-- end update_reset -->
     </div> <!-- end col m3 -->
   </div> <!-- end row -->

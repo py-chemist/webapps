@@ -1,7 +1,7 @@
 
 \documentclass{minimal}
 \usepackage{xcolor, chemfig, mol2chemfig}
-\usepackage[paperheight=5cm, paperwidth=25cm]{geometry}
+\usepackage[paperheight=6cm, paperwidth=28cm]{geometry}
 \usepackage{amsmath}
 \setatomsep{2em}
 \setbondoffset{1pt}
@@ -12,7 +12,7 @@
 \vspace*{\fill}
 \vspace{-4pt}
 \begin{center}
-\schemestart[0,2,thick]
+\schemestart[0,2.5,thick]
 \chemfig{
             % 1
      -[:330]% 2
@@ -24,23 +24,7 @@
          =_[:30]% -> 1
                )
 }
-\arrow{->[acetone]}
-\chemfig{
-             % 7
-    -[:290.2]% 1
-    -[:350.2]% 2
-    -[:290.2]% 3
-                (
-        -[:350.2]% 8
-                )
-    -[:230.2]% 4
-    -[:170.2]% 5
-    -[:110.2]% 6
-                (
-         -[:50.2]% -> 1
-                )
-}
-\arrow{}
+\arrow{->[PdCl$_2${(}PPh{)}$_3$][120$^\circ$C]}
 \chemfig{
            % 1
     -[:324]% 2
@@ -50,10 +34,6 @@
               (
          -[:36]% -> 1
               )
-}
-\+{1em, 1em, -2em}
-\chemfig{
-    % 1
 }
 \schemestop
 \end{center}

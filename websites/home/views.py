@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect, url_for
 
 home = Blueprint('home', __name__,
                  template_folder='templates',
@@ -7,4 +7,4 @@ home = Blueprint('home', __name__,
 
 @home.route('/')
 def main():
-    return render_template('home/index.html')
+    return redirect(url_for("mol_2_chemfig.home"))

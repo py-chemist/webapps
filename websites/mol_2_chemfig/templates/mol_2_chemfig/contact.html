@@ -1,0 +1,32 @@
+{% extends "mol_2_chemfig/layout.html" %}
+
+{% block title %} <title>Contact</title>{% endblock %}
+
+{% block extra %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('mol_2_chemfig.static', filename='css/contact.css') }}">
+<link href="//fonts.googleapis.com/css?family=Ubuntu">
+{% endblock %}
+
+
+{% block content %}     	
+
+<div id="text_about">
+  <div class="w3-container w3-padding-32">
+    <h3 id="header" class="w3-center">Attention!&nbsp; Achtung!</h3>
+    <p> Mol2chemfig Web comes without any warranty! Feel free to use, share, modify the code at no cost. If you need to use programs/libraries used to develop Mol2chemfig Web, please contact the corresponding authors directly.</p>
+    <p>Comments, sugestions, bug reporst and constructive criticism are very welcome. Also, if you would like to see more features, do not to hesitate to contact me at py.chemist@gmail.com (I am not Prof. Palmer, my name is Vitali). The source code of Mol2chemfig Web can be found on <a href="https://github.com/py-chemist/web_apps" target="_blank">this page</a>.</p>
+ </div>  
+{% endblock %}
+
+  {% block footer %}
+  <div id="footer" class="w3-center w3-text-black">
+    <footer >
+      Mol2chemfig Web  © 2014&nbsp;- 2017 &nbsp; Vitali Coltuclu
+    </footer>
+  </div>
+
+{% endblock %}
+
+  {% block scripts %}
+  
+  {% endblock %}

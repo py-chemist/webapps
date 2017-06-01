@@ -1,0 +1,129 @@
+/* TEXTAREA */
+
+#chemical{
+    height:33px;
+    margin-top:3px;
+    padding:5px;
+    font-size:small;
+}
+
+#txt_area{
+    width: 100%;
+    height: 450px;
+    border: 1px solid #2196F3!important;
+    font-family: Ubuntu;
+    font-size: 14px;
+}
+
+#angle2 {
+    width: 57px;
+    height: 20px;
+    margin-top: 5px;
+    margin-left: 5px;
+    padding: 2px;
+    font-family: Ubuntu;
+}
+
+#angle{
+    margin-left:20px;
+    margin-bottom: -30px;
+    font-family: Ubuntu;
+    font-size: 13px;
+}
+
+#H2{
+    width:45%;
+    margin-top:5px;
+    margin-left: 5px ;
+    padding:0;
+    font-family: Ubuntu;
+    font-size: 13px;
+}
+
+#text_hydrogens{
+    margin-left:5px;
+    
+}
+
+#text_hydrogens label{
+    font-family: Ubuntu;
+    font-size: 13px;
+    
+} 
+
+input[type=checkbox] {
+    margin-left:12% ;
+    width:18px;
+    height: 18px;
+}
+
+.w3-validate{
+    font-family: Ubuntu;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+#update_reset{
+    margin-top:5px;
+    /* margin-left:25%; */
+}
+
+#more_options{
+    /* margin-top: 0px; */
+    font-family: Ubuntu;
+    font-size: 13px;
+    text-decoration: None;
+}
+
+#search{
+    margin-left:8px;
+    margin-top:2px;
+    padding:7px 12px;
+}
+
+
+textarea:focus,input:focus { 
+    outline: none !important;
+    border:1px solid red;
+    box-shadow: 0 0 10px #719ECE;
+}
+
+iframe{
+    margin-top: 65px;
+    border: 1px solid #2196F3!important;
+    box-shadow: 0 0 10px #719ECE;
+}
+
+#convert{
+    margin-top:-5px;
+}
+
+#get_mol{
+    margin-top:7px;
+}
+
+#chem{
+    margin-top:50px;
+}
+
+.w3-tiny {
+    font-size: 12px!important;
+}
+
+#check_update, #check_reset{
+    padding:5px 8px;
+}
+
+.w3-small{
+    font-size:13px !important;
+}
+
+#footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  /* padding: 1rem; */
+  /* background-color: #efefef; */
+  text-align: center;
+}

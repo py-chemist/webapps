@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, jsonify, request
+from flask import Blueprint, render_template, jsonify, request, redirect, url_for
 import forms
 from chemistry.chemfig import smiles_mol_to_chemfig, get_smiles, update_chemfig
 import re
@@ -8,6 +8,7 @@ import base64
 
 MOL_FILE = 'websites/mol_2_chemfig/static/molecule.mol'
 REACTION = 'websites/mol_2_chemfig/static/reaction.mol'
+pdflink = "static/files/welcome.png"
 
 mol_2_chemfig = Blueprint('mol_2_chemfig', __name__,
                           template_folder='templates',
@@ -15,13 +16,19 @@ mol_2_chemfig = Blueprint('mol_2_chemfig', __name__,
 
 
 @mol_2_chemfig.route('/')
-def main():
+def to_home():
+    return redirect(url_for('mol_2_chemfig.home'))
+    
+    
+@mol_2_chemfig.route('/home')
+def home():
     form = forms.HomePageForm()
     checkboxes = forms.get_checkboxes_data()
     menu_links = forms.get_menu_links()
     return render_template("mol_2_chemfig/home.html", form=form,
                            checkboxes=checkboxes,
-                           menu_links=menu_links)
+                           menu_links=menu_links,
+                           pdflink=pdflink)
 
 
 @mol_2_chemfig.route('/links')
@@ -29,9 +36,14 @@ def links():
     return render_template('mol_2_chemfig/links.html')
 
 
-@mol_2_chemfig.route('/about')
-def about():
-    return render_template('mol_2_chemfig/about.html')
+@mol_2_chemfig.route('/tutorial')
+def tutorial():
+    return render_template('mol_2_chemfig/tutorial.html')
+
+
+@mol_2_chemfig.route('/contact')
+def contact():
+    return render_template('mol_2_chemfig/contact.html')
 
 
 @mol_2_chemfig.route('/get_smiles', methods=['POST', "GET"])
@@ -91,7 +103,6 @@ def apply():
 
 @mol_2_chemfig.route('/update', methods=["POST", "GET"])
 def update():
-    data = request.json
     smiles_mol = request.args.get("smiles_mol")
     pdflink = update_chemfig(smiles_mol)
     return jsonify(pdflink=pdflink)
@@ -112,10 +123,10 @@ def reaction():
     return render_template('mol_2_chemfig/reaction.html')
 
 
-def mol_to_chemfig(mol_format):
+def mol_to_chemfig(mol_format, options):
     with open(REACTION, 'w') as f:
         f.write(mol_format)
-    chemfig, pdflink = smiles_mol_to_chemfig("-w", REACTION)
+    chemfig, pdflink = smiles_mol_to_chemfig(' '.join(options), REACTION)
     return chemfig
 
 
@@ -123,18 +134,12 @@ def get_round(n):
     return round(n, 3)
 
 
-# def get_all_compounds(axis, reaction, mol_files):
-#     for i in range(len(reaction['m'])):
-#         bonds = reaction['m'][i]['a']
-#         c = sorted([get_round(bond[axis]) for bond in bonds])[-1]
-#         a_list.append((c, mol_to_chemfig(mol_files[i])))
-
-def get_all_compounds(axis, reaction, mol_files):
+def get_all_compounds(axis, reaction, mol_files, options):
     d = {}
     for i in range(len(reaction['m'])):
         bonds = reaction['m'][i]['a']
         c = sorted([get_round(bond[axis]) for bond in bonds])[-1]
-        d[c] = mol_to_chemfig(mol_files[i])
+        d[c] = mol_to_chemfig(mol_files[i], options)
     return d
 
 
@@ -217,8 +222,8 @@ def parse_text():
     return jsonify(splitted_text=above_bllow_all)
 
 
-def parse_reaction(reaction, mol_files, text_arrow):
-    all_compounds = get_all_compounds("x", reaction,  mol_files)
+def parse_reaction(reaction, mol_files, text_arrow, options):
+    all_compounds = get_all_compounds("x", reaction,  mol_files, options)
     all_arrows = reaction["s"]
     first_x_coor_arrow = [get_round(i['x1']) for i in all_arrows]
     all_x_coord = sorted(all_compounds.keys() + first_x_coor_arrow)
@@ -238,7 +243,8 @@ def convert_reaction():
     mol_files = request.json['MOLFiles']
     reaction = json.loads(request.json['reaction'])
     input_text = request.json['input_text']
-    d = parse_reaction(reaction, mol_files, input_text)
+    options = request.json['options']
+    d = parse_reaction(reaction, mol_files, input_text, options)
     latex_template = latex_begins + start + d + latex_ends
     txt_latex = start + d + stop
     with open(folder + latex_file, 'w') as f:
@@ -250,10 +256,52 @@ def convert_reaction():
     return jsonify(data=txt_latex, pdflink=pdflink)
 
 
+@mol_2_chemfig.route('/remove_after_percent', methods=["POST"])
+def remove_after_percent():
+    chemfig = request.json['text']
+    text = re.sub('\%.+', '', str(chemfig))
+    return jsonify(chemfig=text)
+
+
+@mol_2_chemfig.route('/get_inline', methods=['POST'])
+def get_inline():
+    chemfig = request.json['text']
+    text = re.sub('\%.+', '', str(chemfig))
+    s2 = text.split()
+    # get index of \chemfig
+    start = [num for num, line in enumerate(s2) if line.startswith("\chemfig")]
+    # get index of }
+    end = [num for num, line in enumerate(s2) if line.startswith("}")]
+    # get all indexes
+    all_indexes = range(len(s2))
+    rest = [range(start[i], end[i] + 1) for i in range(len(start))]
+    rest_chemfig = [(start[i], ''.join(s2[start[i]:end[i] + 1]))
+                    for i in range(len(start))]
+    rest = [item for sublist in rest for item in sublist]
+    not_inline = sorted(list(set(all_indexes) - set(rest)))
+    all_chemfig = [(i, s2[i]) for i in not_inline]
+    all_chemfig = sorted(all_chemfig + rest_chemfig)
+    final = '\n'.join([i[1] for i in all_chemfig])
+    return jsonify(chemfig=final)
+
+
+@mol_2_chemfig.route('/change_chemfig', methods=["POST"])
+def change_chenfig():
+    chemfig = request.json['text']
+    latex_template = latex_begins + chemfig + latex_ends
+    with open(folder + latex_file, 'w') as f:
+        f.write(latex_template)
+    os.system(latexcmd)
+    pdf_string = open('reaction.pdf').read()
+    encoded = base64.encodestring(pdf_string)
+    pdflink = "data:application/pdf;base64,{}".format(encoded)
+    return jsonify(pdflink=pdflink)
+
+
 latex_begins = r"""
 \documentclass{minimal}
 \usepackage{xcolor, chemfig, mol2chemfig}
-\usepackage[paperheight=5cm, paperwidth=25cm]{geometry}
+\usepackage[paperheight=6cm, paperwidth=28cm]{geometry}
 \usepackage{amsmath}
 \setatomsep{2em}
 \setbondoffset{1pt}
@@ -265,7 +313,6 @@ latex_begins = r"""
 \vspace{-4pt}
 \begin{center}""" + '\n'
 add_sign = "\+{1em, 1em, -2em}"
-start = '\schemestart[0,2,thick]' + '\n'
-#arrow = '\n' + "\\arrow{->[hello]%s}" %'[there]' + '\n'
+start = '\schemestart[0,2.5,thick]' + '\n'
 stop = "\n" + "\schemestop"
 latex_ends = "\n" + "\schemestop" + '\n' + "\end{center}" + "\n" + "\\vspace*{\\fill}" + "\n" + "\end{document}"

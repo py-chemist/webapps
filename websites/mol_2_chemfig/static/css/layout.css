@@ -1,0 +1,26 @@
+#navbar{
+    height: 30px;
+}
+
+#navbar_text{
+    margin-left: 15%;
+}
+
+#navbar .w3-bar-item{
+    margin-top:-4px;
+    font-family: 'Ubuntu';
+}
+
+#navbar .w3-right{
+    font-family: 'Ubuntu';
+    font-size: 15px;
+    margin-right: 1%;
+}
+
+#footer{
+    font-family: 'Ubuntu';
+    font-size: 13px;
+}
+
+
+

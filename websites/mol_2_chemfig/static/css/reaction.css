@@ -1,5 +1,9 @@
 /* REACTIONS */
 
+.w3-row{
+    margin-top:40px;
+}
+
 #sketcher2, iframe{
     background-color: white;
 }
@@ -16,9 +20,11 @@ iframe, #arrow_text{
 }
 
 #reaction{
-    margin-top: 35px;
+    margin-top: 7px;
     margin-left: 10%;
     width: 80%;
+    font-family: Ubuntu;
+    font-size: 14px;
 }
 
 iframe:focus {
@@ -41,8 +47,17 @@ img {
 }
 
 #add_text, #remove_text{
-    padding:1px 5px;
-    marging-left: 3px;
+    padding: 1px 5px;
+    margin-left: 3px;
+}
+
+#delete_chemfig{
+    margin-top: 4px;
+    margin-left:3px;
+}
+
+#x{
+    padding: 3px 6px;
 }
 
 #convert2{
@@ -50,14 +65,58 @@ img {
 }
 
 #options{
-    margin-left: 12%;
+    /* margin-left: 12%; */
     margin-top: 2%;
 }
 
 #update_reset2{
-    margin-left: 40%;
+    /* margin-left: 35%; */
+    margin-top: 10px;
 }
 
 .w3-tiny{
     font-size: 12px !important;
+}
+
+#to_chemfig{
+    height:28px;
+    margin-top:3px;
+    margin-left:0%;
+    font-size:small;
+    width:40%;
+}
+
+#celcius{
+    margin-left:1px;
+}
+
+#output{
+    margin-left: 12%;
+    margin-top: 2px;
+    font-family: Ubuntu;
+    font-size: 15px;
+}
+
+#app2{
+    margin-left:10%;
+}
+
+#footer{
+    /* background-color:#616161; */
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:20px;
+}
+
+input[type=checkbox] {
+    /* margin-left:12% ; */
+    width:18px;
+    height: 18px;
+}
+
+.w3-validate{
+    font-family: Ubuntu;
+    font-size: 13px;
+    line-height: 1.5;
 }

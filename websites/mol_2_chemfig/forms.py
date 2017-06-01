@@ -8,7 +8,7 @@ def get_checkboxes_data():
 
     title = ["Wrap the code into \chemfig{...}",
              "Display chemfig format inline",
-             "Strip line after %",
+             # "Strip line after %",
              "Assign number to each atom except hydrogen",
              "Show nicer double and triple bonds",
              "Show circle in aromatic compounds instead of double bonds",
@@ -16,8 +16,9 @@ def get_checkboxes_data():
              "Show methyl group as elements",
              "Flip the structure horizontally",
              "Flop the strcture vertically"]
-    value = ["-w", "-j", "-rm", "-n", "-f", "-o", "-c", "-m", "-p", "-q"]
-    text = ["chemfig", "inline", "remove %", "atom-numbers", "fancy bonds", "aromatic",
+    value = ["-w", "-j",  "-n", "-f", "-o", "-c", "-m", "-p", "-q"]  # "-rm",
+    text = ["chemfig", "inline",  # "remove %",
+            "atom-numbers", "fancy bonds", "aromatic",
             "show carbon", "show methyl", "flip", "flop"]
     return zip(title, value, text)
 

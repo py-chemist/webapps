@@ -1,0 +1,26 @@
+.description{
+    font-family: 'Ubuntu', serif;
+    font-size: 15px;
+}
+.links {
+    font-family: 'Ubuntu', Lato;
+    font-size: 15px;
+    text-decoration: None;
+    color: indigo;
+    
+    
+}
+
+h5{
+    text-shadow: 4px 4px 4px #aaa;
+}
+
+#footer {
+  /* position: absolute; */
+  right: 0;
+  bottom: 0;
+  left: 0;
+  /* padding: 1rem; */
+  /* background-color: #efefef; */
+  text-align: center;
+}

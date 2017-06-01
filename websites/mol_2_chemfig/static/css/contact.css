@@ -1,0 +1,30 @@
+#header, p {
+    font-family: Ubuntu;
+}
+
+#header {
+    font-weight: bold;
+}
+
+p {
+    font-size: 17px;
+}
+
+#footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  /* background-color: #efefef; */
+  text-align: center;
+}
+
+a {
+    text-decoration: None;
+    color: indigo;
+}
+
+a href {
+    text-color: red;
+}

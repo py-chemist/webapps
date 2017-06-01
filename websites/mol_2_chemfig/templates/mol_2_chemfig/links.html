@@ -1,0 +1,69 @@
+{% extends "mol_2_chemfig/layout.html" %}
+
+{% block title %}
+<title>Links</title>
+{% endblock %}
+
+{% block extra %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('mol_2_chemfig.static', filename='css/links.css') }}">
+<link href="//fonts.googleapis.com/css?family=Ubuntu">
+{% endblock %}
+
+{% block content %}
+
+<div id="Links" class="w3-content w3-padding-24">
+  <div class="w3-container w3-card-2 w3-white w3-margin-top w3-hover-shadow">
+    <h5 class="w3-center">Latex and Chemistry</h5>
+    <ul class="w3-ul">
+      <li>
+	<a class="links" href="http://www.ctan.org/pkg/chemfig" target="_blank">Chemfig</a>
+	<span class="description">- an extremely usefull LaTeX package for drwaing chemical structures. The basic knowledge of this package is a must.</span> 
+      </li>
+      <li>
+	<a class="links" href="http://chimpsky.uwaterloo.ca/mol2chemfig" target="_blank">Mol2chemfig</a>
+	<span class="description">- a python program that renders chemical structures from a molfile or SMILES format to chemfig syntax (maintained by <a href="http://science.uwaterloo.ca/~mpalmer/contact.html" target="_blank" class="links" style="text-decoration:none;">Prof. M. Palmer</a>). </span>
+      </li>
+      <li>
+	<a class="links" href="http://py-chemist.com/mol_2_chemfig" target="_blank">Mol2chemfig Web</a>
+	<span class="description">is a web application built upon Mol2chemfig package. Provides an user-friendly interface with several usefull features. A more detailed descpription can be found 
+	  <a class="links" href="/mol_2_chemfig/about">here</a></span>.
+      </li>
+      <li>
+	<a class="links" href="https://tex.stackexchange.com/" target="_blank">TeX StackExchange</a>
+	<span class="description">is a website that can help if you get stucked and do not know how to solve problems related to LaTeX, do not hesitate to ask a question on TeX StackExchange. </span>
+      </li>
+      <li>
+	<a class="links" href="http://www.mychemistry.eu/" target="_blank">MYCHEMISTRY</a>
+	<span class="description">Clemens Niederberger's personal blog where he shares his knowledge related to LaTeX and chemistry. Clemens is the author of several LaTeX packages and a very knowledgeable person in this area. I highly recommend to check his blog out.</span>
+      </li>
+    </ul>
+  </div> <!-- end Latex and Chemistry -->
+  <div class="w3-container w3-card-2 w3-white w3-margin-top w3-hover-shadow">
+    <h5 class="w3-center">Software used to develop Mol2chemfig Web</h5>
+    <ul class="w3-ul">
+      <li>
+	<a class="links" href="http://flask.pocoo.org/" target="_blank">Flask</a>
+	<span class="description">is a webframework for Python. Minimalistic but very powefull. As name sugests, if you are a chemist - use it.</span> 
+      </li>
+      <li>
+	<a class="links" href="http://web.chemdoodle.com/" target="_blank">ChemDoodle Web Components</a>
+	<span class="description">- a chemical graphics and cheminformatics library for the web. Easy to integrate and use. Has a rich set of functionalities but some services may require registration.</span> 
+      </li>
+      <li>
+	<a class="links" href="https://github.com/mcs07/PubChemPy" target="_blank">PubChemPy</a>
+	<span class="description">is a very handy python program for interaction with PubChem. Chemical searches by name, retrieval of chemical properties, chemical standardization are only few options out of many that PubChemPy provides.</span>
+      </li>
+
+    </ul>
+  </div> <!-- end Software used -->
+  <div class="w3-container w3-card-2 w3-white w3-margin-top w3-margin-bottom w3-hover-shadow">
+    <h5 class="w3-center">Databases</h5>
+    <span class="description">If you need to get information about chemical and physical properties of a compound, check out some of the chemical databases: <a class="links" href="https://pubchem.ncbi.nlm.nih.gov/" target="_blank">PubChem</a>, <a class="links" href="http://www.chemspider.com/" target="_blank">ChemSpider</a>,
+      <a class="links" href="http://webbook.nist.gov/chemistry/" target="_blank">NIST Chemistry.</a>
+    </span>
+    <p></p>
+    
+  </div> <!-- Databases -->
+</div> <!-- end Links -->
+ 
+{% endblock %}
