@@ -1,0 +1,72 @@
+
+\documentclass{minimal}
+\usepackage{xcolor, chemfig, mol2chemfig}
+\usepackage[paperheight=6cm, paperwidth=28cm]{geometry}
+\usepackage{amsmath}
+\setatomsep{2em}
+\setbondoffset{1pt}
+\setdoublesep{3pt}
+\setbondstyle{line width=1pt}
+
+\begin{document}
+\vspace*{\fill}
+\vspace{-4pt}
+\begin{center}
+\schemestart[0,2.5,thick]
+\chemfig{
+            % 1
+     -[:330]% 2
+    =_[:270]% 3
+     -[:210]% 4
+    =_[:150]% 5
+      -[:90]% 6
+               (
+         =_[:30]% -> 1
+               )
+}
+\arrow{->[CH$_3$C$_6$H$_5$][110$^\circ$C]}
+\chemfig{
+           % 1
+    -[:330]% 2
+    -[:270]% 3
+    -[:210]% 4
+    -[:150]% 5
+     -[:90]% 6
+              (
+         -[:30]% -> 1
+              )
+}
+\arrow{->[toluene][reflux]}
+\chemfig{
+            % 1
+     -[:330]% 2
+    =_[:270]% 3
+     -[:210]% 4
+    =_[:150]% 5
+      -[:90]% 6
+               (
+         =_[:30]% -> 1
+               )
+}
+\+{1em, 1em, -2em}
+\chemfig{
+           O% 8
+    =[:270]% 7
+              (
+        -[:330]% 9
+         =[:30]% 10
+              )
+    -[:210]% 2
+    -[:150]% 1
+    -[:210]% 6
+    -[:270]% 5
+    -[:330]% 4
+     -[:30]% 3
+              (
+         -[:90]% -> 2
+              )
+}
+\schemestop
+\end{center}
+\vspace*{\fill}
+\end{document}

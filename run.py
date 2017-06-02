@@ -3,9 +3,9 @@ from flask import Flask
 
 def create_app():
     app = Flask(__name__)
-    from websites.home.views import home
-    from websites.mol_2_chemfig.views import mol_2_chemfig
-    from websites.ml_app.views import ml_app
+    from webapps.home.views import home
+    from webapps.mol_2_chemfig.views import mol_2_chemfig
+    from webapps.ml_app.views import ml_app
 
     app.register_blueprint(home)
     app.register_blueprint(mol_2_chemfig, url_prefix='/mol_2_chemfig')

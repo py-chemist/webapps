@@ -6,8 +6,8 @@ import json
 import os
 import base64
 
-MOL_FILE = 'websites/mol_2_chemfig/static/molecule.mol'
-REACTION = 'websites/mol_2_chemfig/static/reaction.mol'
+MOL_FILE = 'webapps/mol_2_chemfig/static/molecule.mol'
+REACTION = 'webapps/mol_2_chemfig/static/reaction.mol'
 pdflink = "static/files/welcome.png"
 
 mol_2_chemfig = Blueprint('mol_2_chemfig', __name__,
@@ -112,7 +112,7 @@ def update():
 ############
 
 
-folder = 'websites/mol_2_chemfig/static/'
+folder = 'webapps/mol_2_chemfig/static/'
 latex_file = 'reaction.tex'
 path = folder + latex_file
 latexcmd = 'pdflatex -interaction=nonstopmode %s > /dev/null' % path
